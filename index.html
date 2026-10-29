@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard DHO — 300 Franchising</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#E30000;--red-light:#fce8e8;--black:#0F0F0F;
+  --blue:#185FA5;--blue-light:#EBF3FC;
+  --green:#1D9E75;--green-light:#E3F5EE;
+  --orange:#E07000;--orange-light:#FFF0E0;
+  --purple:#7C3AED;--purple-light:#F3F0FF;
+  --bg:#E9E9E9;--surface:#fff;--border:rgba(0,0,0,.1);
+  --txt:#0F0F0F;--txt2:#555;--txt3:#888;
+  --r-sm:6px;--r-md:10px;--r-lg:14px;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --black:#F2F2F2;
+    --red-light:#3A1414;--blue-light:#132638;--green-light:#10291F;--orange-light:#33220F;--purple-light:#231A3A;
+    --bg:#151515;--surface:#1F1F1F;--border:rgba(255,255,255,.1);
+    --txt:#F2F2F2;--txt2:#B8B8B8;--txt3:#8C8C8C;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --black:#F2F2F2;
+  --red-light:#3A1414;--blue-light:#132638;--green-light:#10291F;--orange-light:#33220F;--purple-light:#231A3A;
+  --bg:#151515;--surface:#1F1F1F;--border:rgba(255,255,255,.1);
+  --txt:#F2F2F2;--txt2:#B8B8B8;--txt3:#8C8C8C;
+}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);padding:2rem;font-size:14px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:12px}
+.hdr-l{display:flex;align-items:center;gap:16px}
+.logo-sq{background:var(--red);color:#fff;font-size:20px;font-weight:800;width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:4px;letter-spacing:-1px;flex-shrink:0}
+.logo-text-wrap{display:flex;flex-direction:column;line-height:1.25}
+.logo-text-top{font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em}
+.logo-text-bot{font-size:11px;font-weight:500;color:var(--txt3)}
+.hdr-divider{width:1px;height:40px;background:var(--border);margin:0 4px}
+.hdr-title{font-size:20px;font-weight:700;color:var(--black);letter-spacing:-.3px}
+.hdr-sub{font-size:12px;color:var(--txt2);margin-top:3px;font-weight:500}
+.fbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 16px;display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;flex-wrap:wrap}
+.fg{display:flex;align-items:center;gap:8px}
+.flabel{font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.fsel{font-family:inherit;font-size:13px;color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:5px 28px 5px 10px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;cursor:pointer;min-width:120px}
+.fsel:focus,.fdate:focus{outline:none;border-color:var(--red)}
+.fdate{font-family:inherit;font-size:13px;color:var(--txt);border:1px solid var(--border);border-radius:8px;padding:5px 9px;background:var(--bg);cursor:pointer;min-width:140px}
+.fdiv{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.view-btns{display:flex;gap:6px;margin-left:auto}
+.vbtn{font-family:inherit;font-size:12px;font-weight:500;padding:6px 14px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--txt2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.vbtn:hover{background:var(--bg)}
+.vbtn.active{background:var(--red);color:#fff;border-color:var(--red)}
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.5rem}
+.kcard{background:var(--surface);border-radius:var(--r-lg);padding:1.25rem 1.5rem;border:1px solid var(--border);position:relative;overflow:hidden}
+.kacc{position:absolute;top:0;left:0;width:100%;height:3px}
+.kicon{width:36px;height:36px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.klabel{font-size:11px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.kval{font-size:36px;font-weight:800;line-height:1;margin-bottom:4px}
+.kmeta{font-size:12px;color:var(--txt3);margin-bottom:12px}
+.ptrack{background:var(--bg);border-radius:99px;height:5px}
+.pfill{height:5px;border-radius:99px}
+.ccard{background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--border);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.ctitle{font-size:14px;font-weight:700}
+.csub{font-size:12px;color:var(--txt2);margin-top:2px;margin-bottom:12px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2)}
+.ldot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.tcard{background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--border);padding:1.25rem 1.5rem;margin-bottom:1.5rem;overflow-x:auto}
+.thead-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font-size:12px;font-family:inherit;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--txt2);cursor:pointer;transition:all .15s}
+.tab:hover{background:var(--bg)}
+.tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:0 10px 10px 0;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+tbody td{padding:10px 10px 10px 0;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg)}
+.mgr-name{font-weight:500;cursor:pointer;color:var(--red);text-decoration:underline;text-underline-offset:2px}
+.dbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:99px;font-weight:500}
+.ddot{width:6px;height:6px;border-radius:50%}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;display:inline-block}
+.pg{background:#E3F5EE;color:#0F6E56}.pa{background:#FAEEDA;color:#854F0B}.pr{background:#FCEBEB;color:#A32D2D}
+.person-v{display:none}.person-v.on{display:block}
+.overview.off{display:none}
+.back-btn{font-family:inherit;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--txt2);border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:6px 12px;cursor:pointer;margin-bottom:1.25rem}
+.back-btn:hover{background:var(--bg)}
+.phdr{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:16px}
+.pav{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#fff;flex-shrink:0}
+.pname{font-size:18px;font-weight:700}
+.pmeta{font-size:13px;color:var(--txt2);margin-top:2px}
+.pkpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.25rem}
+.pkcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem 1.25rem}
+.pkval{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.pklabel{font-size:11px;color:var(--txt2);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.wdetail{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.5rem}
+.wrow{display:grid;grid-template-columns:180px 1fr 1fr;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.wrow:last-child{border-bottom:none}
+.wlabel{font-size:12px;color:var(--txt2);font-weight:500}
+.wcell{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.pdi-tables{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+#pdiDetailGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:760px){body{padding:1rem}.kgrid,.pkpis,.pdi-tables,#pdiDetailGrid{grid-template-columns:1fr}.hdr{flex-direction:column;align-items:flex-start}.view-btns{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hdr">
+  <div class="hdr-l">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="logo-sq">300</div>
+      <div class="logo-text-wrap">
+        <span class="logo-text-top">Ecossistema</span>
+        <span class="logo-text-bot">300 franchising</span>
+      </div>
+    </div>
+    <div class="hdr-divider"></div>
+    <div>
+      <div class="hdr-title">Dashboard DHO</div>
+      <div class="hdr-sub">Feedbacks · 1:1 · Evolução de PDI · <span id="dataAte"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="fbar">
+  <div class="fg" id="fgDataIni"><span class="flabel">De</span><input class="fdate" type="date" id="fDataIni" onchange="applyFilters()"></div>
+  <div class="fg" id="fgDataFim"><span class="flabel">Até</span><input class="fdate" type="date" id="fDataFim" onchange="applyFilters()"></div>
+  <div class="fdiv"></div>
+  <div class="fg" id="fgTipo"><span class="flabel">Tipo</span>
+    <select class="fsel" id="fTipo" onchange="applyFilters()">
+      <option value="all">Todos</option>
+      <option value="1:1">1:1</option>
+      <option value="Check de Ligação">Check de Ligação</option>
+      <option value="Feedback">Feedback</option>
+    </select>
+  </div>
+  <div class="fdiv"></div>
+  <div class="fg" id="fgDir">
+    <span class="flabel">Diretoria</span>
+    <select class="fsel" id="fDir" onchange="applyFilters()">
+      <option value="all">Todas</option>
+    </select>
+  </div>
+  <div class="fdiv"></div>
+  <div class="fg" id="fgPessoa">
+    <span class="flabel">Pessoa</span>
+    <select class="fsel" id="fPessoa" onchange="applyPersonFilter()">
+      <option value="all">Todos os gestores</option>
+    </select>
+  </div>
+  <button class="vbtn" id="btnLimpar" onclick="resetFilters()">Limpar</button>
+  <div class="view-btns">
+    <button class="vbtn active" id="btnVisao" onclick="setMainView('overview')">Feedbacks &amp; 1:1</button>
+    <button class="vbtn" id="btnPdiView" onclick="setMainView('pdi')">PDI &amp; Trilhas</button>
+  </div>
+</div>
+
+<div class="overview" id="overviewSection">
+  <div class="kgrid">
+    <div class="kcard">
+      <div class="kacc" style="background:var(--red)"></div>
+      <div class="kicon" style="background:var(--red-light);color:var(--red)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="klabel">Feedbacks / Checks</div>
+      <div class="kval" id="kFb" style="color:var(--red)">—</div>
+      <div class="kmeta" id="kFbMeta">no período selecionado</div>
+      <div class="ptrack"><div class="pfill" id="kFbBar" style="background:var(--red)"></div></div>
+    </div>
+    <div class="kcard">
+      <div class="kacc" style="background:var(--blue)"></div>
+      <div class="kicon" style="background:var(--blue-light);color:var(--blue)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="klabel">1:1 registrados</div>
+      <div class="kval" id="kOne" style="color:var(--blue)">—</div>
+      <div class="kmeta" id="kOneMeta">no período selecionado</div>
+      <div class="ptrack"><div class="pfill" id="kOneBar" style="background:var(--blue)"></div></div>
+    </div>
+    <div class="kcard">
+      <div class="kacc" style="background:var(--green)"></div>
+      <div class="kicon" style="background:var(--green-light);color:var(--green)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+      <div class="klabel">Gestores com Feedback ou 1:1</div>
+      <div class="kval" id="kActive" style="color:var(--green)">—</div>
+      <div class="kmeta" id="kActiveMeta">realizaram ao menos 1 registro</div>
+      <div class="ptrack"><div class="pfill" id="kActiveBar" style="background:var(--green)"></div></div>
+    </div>
+  </div>
+  <div class="ccard" id="tiposCard">
+    <div class="ctitle">Tipos de registro</div>
+    <div class="csub">Distribuição por tipo no período selecionado</div>
+    <div id="tiposGrid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+  </div>
+
+  <div class="tcard">
+    <div class="thead-row">
+      <div>
+        <div style="font-size:15px;font-weight:700">Detalhe por gestor</div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:2px">Clique no nome para ver os registros do período</div>
+      </div>
+      <div class="tabs" id="dirTabs">
+        <button class="tab active" onclick="filterTable('all',this)">Todos</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Gestor</th><th>Diretoria</th><th>Equipe</th><th>Feedbacks</th><th>1:1</th><th>Realização</th><th>Status</th></tr></thead>
+      <tbody id="tBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="pdiMainSection" style="display:none">
+  <div class="fbar" style="margin-bottom:1.5rem">
+    <div class="fg"><span class="flabel">Tipo</span>
+      <select class="fsel" id="pdiType" onchange="renderPdiSection()">
+        <option value="all">Todos</option>
+        <option value="pdi">PDI Individual</option>
+        <option value="trilhas">Trilhas</option>
+      </select>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="flabel">Gestor</span>
+      <select class="fsel" id="pdiGestor" onchange="renderPdiSection()">
+        <option value="all">Todos os gestores</option>
+      </select>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><span class="flabel">Trilha</span>
+      <select class="fsel" id="pdiTrilha" onchange="renderPdiSection()">
+        <option value="all">Todas as trilhas</option>
+      </select>
+    </div>
+  </div>
+  <div class="kgrid" style="margin-bottom:1.5rem">
+    <div class="kcard"><div class="kacc" style="background:var(--purple)"></div><div class="kicon" style="background:var(--purple-light);color:var(--purple)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="klabel">PDI Individual</div><div class="kval" id="kPdiTotal" style="color:var(--purple)">—</div><div class="kmeta">planos em andamento</div><div class="ptrack"><div class="pfill" id="kPdiBar" style="background:var(--purple)"></div></div></div>
+    <div class="kcard"><div class="kacc" style="background:var(--orange)"></div><div class="kicon" style="background:var(--orange-light);color:var(--orange)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="klabel">Trilhas</div><div class="kval" id="kTriTotal" style="color:var(--orange)">—</div><div class="kmeta">trilhas em andamento</div><div class="ptrack"><div class="pfill" id="kTriBar" style="background:var(--orange)"></div></div></div>
+    <div class="kcard"><div class="kacc" style="background:var(--green)"></div><div class="kicon" style="background:var(--green-light);color:var(--green)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="klabel">Progresso médio geral</div><div class="kval" id="kPdiProg" style="color:var(--green)">—</div><div class="kmeta">PDI + Trilhas</div><div class="ptrack"><div class="pfill" id="kPdiProgBar" style="background:var(--green)"></div></div></div>
+  </div>
+  <div class="ccard" id="trilhaCard">
+    <div class="ctitle">Distribuição por trilha</div>
+    <div class="csub">Colaboradores com trilha em andamento</div>
+    <div id="trilhaGrid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+  </div>
+
+  <div class="pdi-tables">
+    <div class="tcard" style="margin-bottom:0" id="pdiTableWrap"><div style="font-size:15px;font-weight:700;margin-bottom:4px">PDI Individual</div><div style="font-size:12px;color:var(--txt2);margin-bottom:14px">Planos por gestor</div><table><thead><tr><th>Gestor</th><th>Colab.</th><th>Progresso</th><th>Status</th></tr></thead><tbody id="pdiTableBody"></tbody></table></div>
+    <div class="tcard" style="margin-bottom:0" id="triTableWrap"><div style="font-size:15px;font-weight:700;margin-bottom:4px">Trilhas</div><div style="font-size:12px;color:var(--txt2);margin-bottom:14px">Progresso por gestor</div><table><thead><tr><th>Gestor</th><th>Colab.</th><th>Progresso</th><th>Status</th></tr></thead><tbody id="triTableBody"></tbody></table></div>
+  </div>
+  <div class="tcard"><div style="font-size:15px;font-weight:700;margin-bottom:4px">Detalhe por colaborador</div><div style="font-size:12px;color:var(--txt2);margin-bottom:16px">PDI Individual e Trilhas em andamento (concluídos não listados)</div><div id="pdiDetailGrid"></div></div>
+</div>
+
+<div class="person-v" id="personSection">
+  <button class="back-btn" onclick="closePersonView()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Voltar para visão geral</button>
+  <div class="phdr" id="pHdr"></div>
+  <div class="pkpis" id="pKpis"></div>
+  <div class="wdetail" id="wDetail"></div>
+</div>
+</div>
+
+<script>
+const PDI_DATA = {"pdi": {"ANDRE CUSTODIO DA SILVA": {"total": 1, "prog": 0, "concluidos": 0, "atrasados": 0, "em_andamento": 1, "colabs": [{"nome": "Gisele Cardozo de Assis", "progresso": 0, "status": "Em andamento", "planos": 1, "plano": "Programa Upskill", "tipo": "Upskill"}]}, "BEATRIS HEIDEMANN": {"total": 1, "prog": 0, "concluidos": 0, "atrasados": 0, "em_andamento": 1, "colabs": [{"nome": "Pedro Henrique Guimarães Carius", "progresso": 0, "status": "Em andamento", "planos": 1, "plano": "PROGRAMA UPSKILL", "tipo": "Upskill"}]}, "ROSEMARY AP DE OLIVEIRA": {"total": 2, "prog": 0, "concluidos": 0, "atrasados": 0, "em_andamento": 2, "colabs": [{"nome": "Beatriz Correa dos Santos Fedrigo Gonçalves", "progresso": 0, "status": "Em andamento", "planos": 1, "plano": "PDI BEATRIZ", "tipo": "Comunicação"}, {"nome": "Maxmillian Lopes da Costa", "progresso": 0, "status": "Em andamento", "planos": 1, "plano": "Plano de Desenvolvimento Pós Avaliação", "tipo": "Gestão"}]}}, "trilhas": {"BEATRIS HEIDEMANN": {"total": 3, "prog": 40, "concluidas": 0, "colabs": [{"nome": "Franciele Vitória Simão", "progresso": 77, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "Upskill Especialista"}, {"nome": "Gabryela da Silva", "progresso": 0, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Pedro Henrique Guimarães Carius", "progresso": 43, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "BEATRIZ CORREA DOS SANTOS FEDRIGO GONCALVES": {"total": 1, "prog": 0, "concluidas": 0, "colabs": [{"nome": "Kallel Ajala Mota", "progresso": 0, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "BRUNA GOMES DE OLIVEIRA": {"total": 3, "prog": 40, "concluidas": 0, "colabs": [{"nome": "Silvia Paula Santana Meisen", "progresso": 83, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "Upskill Especialista"}, {"nome": "Sueli Drevek Lourenço", "progresso": 24, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Willian Natanael Ferreira", "progresso": 13, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "ELIAS LARANJEIRA FRIOLIM": {"total": 5, "prog": 18, "concluidas": 0, "colabs": [{"nome": "Jian Rafael de Lorena", "progresso": 47, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Gerentes"}, {"nome": "João Vitor da Paixão", "progresso": 11, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "Upskill Especialista"}, {"nome": "Maria Eduarda de Lima Tibes", "progresso": 0, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Miguel Mendes Ferreira", "progresso": 16, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Yago Branches", "progresso": 16, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "JULIA RUNZE": {"total": 3, "prog": 17, "concluidas": 0, "colabs": [{"nome": "Kauê Santos da Graça", "progresso": 0, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Natanael Luiz dos Santos", "progresso": 38, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Raquel Geisiane Ribeiro Costa", "progresso": 12, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI de Liderança (Vendas)"}]}, "JULIANA SPERANDIO": {"total": 2, "prog": 42, "concluidas": 0, "colabs": [{"nome": "Romário Nascimento do Rozário", "progresso": 51, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Tainara Américo da Silva", "progresso": 32, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "REGINALDO FERNANDES DE SOUZA JUNIOR": {"total": 1, "prog": 46, "concluidas": 0, "colabs": [{"nome": "Diego Elias da Silva Pereira da Rosa", "progresso": 46, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "RONALDO CAMARGO": {"total": 3, "prog": 4, "concluidas": 0, "colabs": [{"nome": "Dominique Mercaldo", "progresso": 2, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}, {"nome": "Fernando Rodrigues de Souza", "progresso": 9, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI de Liderança (Vendas)"}, {"nome": "Matias de Sousa", "progresso": 0, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Vendedores"}]}, "ROSEMARY AP DE OLIVEIRA": {"total": 1, "prog": 38, "concluidas": 0, "colabs": [{"nome": "Bruna Gomes de Oliveira", "progresso": 38, "trilhas": 1, "trilhas_ok": 0, "pct_ok": 0, "trilha": "PDI para Gerentes"}]}}};
+const TEAMS    = {"ANDRE CUSTODIO DA SILVA": 2, "BEATRIS HEIDEMANN": 5, "BEATRIZ CORREA DOS SANTOS FEDRIGO GONCALVES": 0, "BRUNA GOMES DE OLIVEIRA": 1, "DIEGO LOPES DE BRITO": 6, "EDINA KATH": 3, "ELIAS LARANJEIRA FRIOLIM": 7, "JULIA RUNZE": 7, "JULIANA SPERANDIO": 3, "KLEBER DE OLIVEIRA": 0, "MAXMILLIAN LOPES DA COSTA": 2, "REGINALDO FERNANDES DE SOUZA JUNIOR": 0, "RONALDO CAMARGO": 4, "ROSEMARY AP DE OLIVEIRA": 5};
+const ACTIVITIES = [{"date":"2026-01-06","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-07","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-01-07","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-01-07","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-01-07","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-07","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-07","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-01-08","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-08","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-01-08","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-08","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-08","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-01-08","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-08","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-09","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-09","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-10","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-01-10","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-01-10","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-01-13","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-01-14","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-01-14","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-15","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-01-16","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-19","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-01-23","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-23","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-26","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-26","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-26","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-26","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-01-27","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-27","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-27","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-01-27","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-01-27","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-28","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-01-29","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-29","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-01-29","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-30","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-01-30","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-02-01","manager":"Edina Kath","type":"1:1"},{"date":"2026-02-03","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Ronaldo Camargo","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-03","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-02-03","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-02-04","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-05","manager":"Juliana Sperandio","type":"Feedback (sem template)"},{"date":"2026-02-05","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-05","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-05","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-05","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-05","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-09","manager":"Ronaldo Camargo","type":"Check de Ligação"},{"date":"2026-02-09","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-09","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-09","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-09","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Beatris Heidemann","type":"Feedback (sem template)"},{"date":"2026-02-10","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Edina Kath","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-10","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Ronaldo Camargo","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-11","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-12","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-12","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-13","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-13","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-17","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-02-17","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-17","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-02-17","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Check de Ligação"},{"date":"2026-02-17","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-02-17","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-02-17","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-02-18","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-02-18","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-18","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-18","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-02-18","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-18","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-02-19","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-02-19","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-19","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-02-19","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-02-20","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-20","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-02-23","manager":"Diego Lopes de Brito","type":"Feedback (sem template)"},{"date":"2026-02-23","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-23","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-24","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-02-24","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-24","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-24","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-02-25","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-02-25","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-25","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-26","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-02-26","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-02-27","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-27","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-02-27","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-02-27","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-03-01","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-01","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-02","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-03-02","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-03-02","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-03-02","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-02","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-03","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-03-03","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-03","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-03-03","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-03","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-03-03","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-04","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-04","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-04","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Kleber de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-05","manager":"Edina Kath","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Diego Lopes de Brito","type":"Feedback (sem template)"},{"date":"2026-03-05","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-05","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-05","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-06","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-06","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-06","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-06","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-08","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-08","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-03-09","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-09","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-03-10","manager":"Juliana Sperandio","type":"Feedback (sem template)"},{"date":"2026-03-10","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-10","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-03-12","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-03-13","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-13","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-16","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-16","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-16","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-03-16","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-03-18","manager":"Juliana Sperandio","type":"Check de Ligação"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-18","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-19","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-03-22","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-22","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-22","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-22","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-23","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-03-23","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Check de Ligação"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Check de Ligação"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-03-24","manager":"Reginaldo Fernandes de Souza Junior","type":"Feedback (sem template)"},{"date":"2026-03-24","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-03-24","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-03-24","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-03-25","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-25","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-25","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-25","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-27","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-03-27","manager":"Kleber de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-27","manager":"Kleber de Oliveira","type":"Feedback (sem template)"},{"date":"2026-03-30","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-03-31","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-04-01","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-04-01","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-04-01","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-04-02","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-02","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-02","manager":"Edina Kath","type":"1:1"},{"date":"2026-04-02","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-04-02","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-04-06","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-04-07","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-07","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-04-08","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-08","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-08","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-08","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-11","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-15","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-15","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-15","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-16","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-04-20","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-20","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-20","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-20","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-04-20","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-04-22","manager":"Edina Kath","type":"1:1"},{"date":"2026-04-22","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-22","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-04-22","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-04-22","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-04-23","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-23","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-04-23","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-04-24","manager":"Elias Laranjeira Friolim","type":"Feedback (sem template)"},{"date":"2026-04-24","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-26","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-26","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-04-26","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-04-26","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-04-27","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-04-28","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-04-28","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-04-28","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-04-29","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-29","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-29","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-04-29","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-29","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-29","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-04-29","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-04-29","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-04-29","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-04-30","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-04-30","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-04-30","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-05-04","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-05-04","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-05-04","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-05-04","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-04","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-05","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-05-05","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-05","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-05","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-05","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-05-05","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-05","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-05-05","manager":"Edina Kath","type":"1:1"},{"date":"2026-05-05","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-06","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-06","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-06","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-07","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-05-07","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-07","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-07","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-07","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-07","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-05-07","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-05-07","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-08","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-08","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-08","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-05-08","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-08","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-11","manager":"Edina Kath","type":"1:1"},{"date":"2026-05-13","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-13","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-14","manager":"Edina Kath","type":"1:1"},{"date":"2026-05-18","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-18","manager":"Edina Kath","type":"1:1"},{"date":"2026-05-18","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-19","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-19","manager":"Edina Kath","type":"Check de Ligação"},{"date":"2026-05-19","manager":"Beatris Heidemann","type":"Check de Ligação"},{"date":"2026-05-19","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-05-20","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-20","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-21","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-22","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-22","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-22","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-22","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-05-24","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-24","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-25","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-05-25","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-25","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-25","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-25","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-26","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-05-26","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-27","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-05-27","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-27","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-05-27","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-27","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-28","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-05-28","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-05-28","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-05-28","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-05-28","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-28","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-28","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-05-28","manager":"Reginaldo Fernandes de Souza Junior","type":"Check de Ligação"},{"date":"2026-05-28","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-05-28","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-05-28","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-05-29","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-05-31","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-05-31","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-05-31","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-06-01","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-06-01","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-01","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-06-01","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-02","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-02","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-02","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-02","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-06-02","manager":"Ronaldo Camargo","type":"Check de Ligação"},{"date":"2026-06-02","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-06-02","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-06-03","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-06-03","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-03","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-03","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-03","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-05","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-05","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-08","manager":"Edina Kath","type":"1:1"},{"date":"2026-06-08","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-09","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-09","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-09","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-10","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-10","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-10","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-10","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-06-10","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-06-11","manager":"Edina Kath","type":"Check de Ligação"},{"date":"2026-06-11","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-06-12","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-14","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-14","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-15","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-06-15","manager":"Elias Laranjeira Friolim","type":"Check de Ligação"},{"date":"2026-06-16","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-16","manager":"Edina Kath","type":"1:1"},{"date":"2026-06-16","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-17","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-17","manager":"Julia Runze","type":"1:1"},{"date":"2026-06-17","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-17","manager":"Julia Runze","type":"1:1"},{"date":"2026-06-17","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-17","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-17","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-17","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-17","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-17","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-18","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-06-18","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-06-18","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-06-18","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-06-18","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-19","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-06-19","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-19","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-23","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-23","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-23","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-23","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-06-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-06-23","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-06-23","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-23","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-06-23","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-06-24","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-06-24","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-24","manager":"Julia Runze","type":"1:1"},{"date":"2026-06-24","manager":"Julia Runze","type":"1:1"},{"date":"2026-06-24","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-06-24","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-06-24","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-24","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-06-24","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-06-25","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-06-25","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-06-25","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-06-25","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-25","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-06-25","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-25","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-06-25","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-06-25","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-06-25","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-06-25","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-06-25","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-25","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-26","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-06-26","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-26","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-06-26","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-06-26","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-06-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-06-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-06-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"Feedback (sem template)"},{"date":"2026-06-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-06-28","manager":"Beatriz Correa dos Santos Fedrigo Gonçalves","type":"1:1"},{"date":"2026-06-29","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-30","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-06-30","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-06-30","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-30","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-06-30","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-06-30","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-06-30","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-06-30","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-06-30","manager":"Julia Runze","type":"1:1"},{"date":"2026-06-30","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-07-01","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-01","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-07-01","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-07-01","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-07-01","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-07-01","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-07-01","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-07-01","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-07-01","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-07-01","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-07-01","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-07-02","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-07-02","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-02","manager":"Diego Lopes de Brito","type":"Check de Ligação"},{"date":"2026-07-02","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-07-02","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-07-02","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-07-03","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-07-07","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-08","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-08","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-08","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-08","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-07-09","manager":"Bruna Gomes de Oliveira","type":"Feedback (sem template)"},{"date":"2026-07-09","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-07-09","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-07-13","manager":"Diego Lopes de Brito","type":"1:1"},{"date":"2026-07-13","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-07-13","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-07-14","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-14","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-07-15","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-07-17","manager":"Kleber de Oliveira","type":"Check de Ligação"},{"date":"2026-07-20","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-07-20","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-07-21","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-21","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-07-22","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-23","manager":"Maxmillian Lopes da Costa","type":"Feedback (sem template)"},{"date":"2026-07-24","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-28","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-28","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-29","manager":"Julia Runze","type":"1:1"},{"date":"2026-07-30","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-07-30","manager":"André Custódio da Silva","type":"Check de Ligação"},{"date":"2026-07-30","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-08-04","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-08-04","manager":"Maxmillian Lopes da Costa","type":"Feedback (sem template)"},{"date":"2026-08-04","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-04","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-08-04","manager":"Juliana Sperandio","type":"1:1"},{"date":"2026-08-04","manager":"Bruna Gomes de Oliveira","type":"1:1"},{"date":"2026-08-05","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-06","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-06","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-06","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-06","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-08-06","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-08-07","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-07","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-08-11","manager":"André Custódio da Silva","type":"Check de Ligação"},{"date":"2026-08-11","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-08-11","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-11","manager":"Kleber de Oliveira","type":"1:1"},{"date":"2026-08-12","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-08-13","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-08-17","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-17","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-17","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-17","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-17","manager":"André Custódio da Silva","type":"Check de Ligação"},{"date":"2026-08-17","manager":"Edina Kath","type":"Feedback (sem template)"},{"date":"2026-08-17","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-17","manager":"Maxmillian Lopes da Costa","type":"Feedback (sem template)"},{"date":"2026-08-18","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-18","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-08-18","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"Feedback (sem template)"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"Check de Ligação"},{"date":"2026-08-18","manager":"André Custódio da Silva","type":"1:1"},{"date":"2026-08-18","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-08-19","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-08-19","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-20","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-20","manager":"Julia Runze","type":"Feedback (sem template)"},{"date":"2026-08-20","manager":"Maxmillian Lopes da Costa","type":"Feedback (sem template)"},{"date":"2026-08-20","manager":"Ronaldo Camargo","type":"1:1"},{"date":"2026-08-21","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-21","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-08-24","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-24","manager":"Julia Runze","type":"Check de Ligação"},{"date":"2026-08-25","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-08-25","manager":"Bruna Gomes de Oliveira","type":"Check de Ligação"},{"date":"2026-08-25","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-26","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-08-26","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-08-26","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-26","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-26","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-26","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-26","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-26","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-08-26","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-08-27","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-08-27","manager":"Maxmillian Lopes da Costa","type":"1:1"},{"date":"2026-08-27","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-27","manager":"Julia Runze","type":"1:1"},{"date":"2026-08-27","manager":"Maxmillian Lopes da Costa","type":"Check de Ligação"},{"date":"2026-08-28","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-08-28","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-08-28","manager":"Beatris Heidemann","type":"1:1"},{"date":"2026-09-01","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-09-01","manager":"Reginaldo Fernandes de Souza Junior","type":"1:1"},{"date":"2026-09-02","manager":"Julia Runze","type":"1:1"},{"date":"2026-09-02","manager":"Julia Runze","type":"Feedback (sem template)"},{"date":"2026-09-02","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-09-02","manager":"Rosemary Ap. de Oliveira","type":"1:1"},{"date":"2026-09-03","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-09-03","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-09-03","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-09-03","manager":"Ronaldo Camargo","type":"Feedback (sem template)"},{"date":"2026-09-03","manager":"Elias Laranjeira Friolim","type":"1:1"},{"date":"2026-10-19","manager":"Rosemary Ap. de Oliveira","type":"Feedback (sem template)","to":"Maxmillian Lopes da Costa","ts":"2026-10-19 11:47","src":"feedback"},{"date":"2026-10-20","manager":"Ronaldo Camargo","type":"Feedback (sem template)","to":"Fernando Rodrigues de Souza","ts":"2026-10-20 11:02","src":"feedback"},{"date":"2026-10-20","manager":"Ronaldo Camargo","type":"Feedback (sem template)","to":"Bruna Gomes de Oliveira","ts":"2026-10-20 11:04","src":"feedback"},{"date":"2026-10-20","manager":"Julia Runze","type":"Check de Ligação","to":"Alice Vitoria Schmidlin","ts":"2026-10-20 12:13","src":"feedback"},{"date":"2026-10-20","manager":"Julia Runze","type":"Check de Ligação","to":"Alice Vitoria Schmidlin","ts":"2026-10-20 12:35","src":"feedback"},{"date":"2026-10-20","manager":"Julia Runze","type":"Check de Ligação","to":"Alice Vitoria Schmidlin","ts":"2026-10-20 12:49","src":"feedback"},{"date":"2026-10-20","manager":"Julia Runze","type":"Check de Ligação","to":"Alice Vitoria Schmidlin","ts":"2026-10-20 13:02","src":"feedback"},{"date":"2026-10-20","manager":"Juliana Sperandio","type":"1:1","to":"Rafaela Marthendal Mafra","ts":"2026-10-20 14:20","src":"feedback"},{"date":"2026-10-20","manager":"Juliana Sperandio","type":"1:1","to":"Romário Nascimento do Rozário","ts":"2026-10-20 14:59","src":"feedback"},{"date":"2026-10-20","manager":"Maxmillian Lopes da Costa","type":"1:1","to":"Felipe Couto da Cunha","ts":"2026-10-20 16:41","src":"feedback"},{"date":"2026-10-20","manager":"Maxmillian Lopes da Costa","type":"1:1","to":"Matheus Henrique da Silva Quintana","ts":"2026-10-20 17:48","src":"feedback"},{"date":"2026-10-21","manager":"Julia Runze","type":"1:1","to":"Alice Vitoria Schmidlin","ts":"2026-10-21 10:42","src":"feedback"},{"date":"2026-10-21","manager":"Julia Runze","type":"1:1","to":"Cleusa de Fátima Kuhn","ts":"2026-10-21 11:04","src":"feedback"},{"date":"2026-10-21","manager":"Julia Runze","type":"1:1","to":"Kallel Ajala Mota","ts":"2026-10-21 14:43","src":"feedback"},{"date":"2026-10-22","manager":"Diego Lopes de Brito","type":"Check de Ligação","to":"Willian Natanael Ferreira","ts":"2026-10-22 09:22","src":"feedback"},{"date":"2026-10-22","manager":"Diego Lopes de Brito","type":"Check de Ligação","to":"Ana Flavia Fernandes Duarte","ts":"2026-10-22 09:25","src":"feedback"},{"date":"2026-10-22","manager":"Julia Runze","type":"1:1","to":"Laryssa Novitzki Heiden","ts":"2026-10-22 10:41","src":"feedback"},{"date":"2026-10-22","manager":"Beatris Heidemann","type":"1:1","to":"Gabryela da Silva","ts":"2026-10-22 10:42","src":"feedback"},{"date":"2026-10-22","manager":"Beatris Heidemann","type":"Feedback (sem template)","to":"Sueli Drevek Lourenço","ts":"2026-10-22 11:24","src":"feedback"},{"date":"2026-10-22","manager":"Julia Runze","type":"1:1","to":"Vitor Hugo Esser","ts":"2026-10-22 14:35","src":"feedback"},{"date":"2026-10-27","manager":"Julia Runze","type":"1:1","to":"Kallel Ajala Mota","ts":"2026-10-27 12:20","src":"feedback"},{"date":"2026-10-27","manager":"Diego Lopes de Brito","type":"Feedback (sem template)","to":"Alisson Cezar Silva Barroso","ts":"2026-10-27 16:33","src":"feedback"},{"date":"2026-10-27","manager":"Julia Runze","type":"1:1","to":"Cleusa de Fátima Kuhn","ts":"2026-10-27 17:52","src":"feedback"},{"date":"2026-10-28","manager":"Ronaldo Camargo","type":"1:1","to":"Fernando Rodrigues de Souza","ts":"2026-10-28 08:49","src":"1on1"},{"date":"2026-10-28","manager":"Julia Runze","type":"1:1","to":"Vitor Hugo Esser","ts":"2026-10-28 17:56","src":"feedback"}];
+const DATA_ATE = '2026-10-28';
+const MANAGERS = [{"name": "André Silva", "full": "André Custódio da Silva", "diretoria": "Sem diretoria"}, {"name": "Beatris Heidemann", "full": "Beatris Heidemann", "diretoria": "Guardiões"}, {"name": "Beatriz Gonçalves", "full": "Beatriz Correa dos Santos Fedrigo Gonçalves", "diretoria": "300 Educação"}, {"name": "Bruna Oliveira", "full": "Bruna Gomes de Oliveira", "diretoria": "Guardiões"}, {"name": "Diego Brito", "full": "Diego Lopes de Brito", "diretoria": "Guardiões"}, {"name": "Edina Kath", "full": "Edina Kath", "diretoria": "Fúria"}, {"name": "Elias Friolim", "full": "Elias Laranjeira Friolim", "diretoria": "Fúria"}, {"name": "Julia Runze", "full": "Julia Runze", "diretoria": "Fúria"}, {"name": "Juliana Sperandio", "full": "Juliana Sperandio", "diretoria": "Fúria"}, {"name": "Kleber Oliveira", "full": "Kleber de Oliveira", "diretoria": "Fúria"}, {"name": "Maxmillian Costa", "full": "Maxmillian Lopes da Costa", "diretoria": "Guardiões"}, {"name": "Reginaldo Junior", "full": "Reginaldo Fernandes de Souza Junior", "diretoria": "Guardiões"}, {"name": "Ronaldo Camargo", "full": "Ronaldo Camargo", "diretoria": "Guardiões"}, {"name": "Rosemary Oliveira", "full": "Rosemary Ap. de Oliveira", "diretoria": "Guardiões"}];
+const DIR_CFG  = {'Guardiões':{color:'#E30000',bg:'#fff0f0',text:'#A32D2D'},'Fúria':{color:'#185FA5',bg:'#EBF3FC',text:'#0C447C'},'300 Educação':{color:'#7C3AED',bg:'#F3F0FF',text:'#5B21B6'},'Sem diretoria':{color:'#999',bg:'#F0F0F0',text:'#666'}};
+const DIRS=[...new Set(MANAGERS.map(m=>m.diretoria))].sort((a,b)=>(a==='Sem diretoria')-(b==='Sem diretoria')||a.localeCompare(b));
+DIRS.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;document.getElementById('fDir').appendChild(o);const b=document.createElement('button');b.className='tab';b.textContent=d;b.onclick=function(){filterTable(d,this);};document.getElementById('dirTabs').appendChild(b);});
+function dirCfg(d){return DIR_CFG[d]||{color:'#999',bg:'#F0F0F0',text:'#666'};}
+
+const fPessoa=document.getElementById('fPessoa');
+[...MANAGERS].sort((a,b)=>a.name.localeCompare(b.name)).forEach(m=>{const o=document.createElement('option');o.value=m.full;o.textContent=m.name+' ('+m.diretoria+')';fPessoa.appendChild(o);});
+
+let curDir='all',curTableDir='all',mainView='overview';
+const MIN_DATE=ACTIVITIES.reduce((a,r)=>r.date<a?r.date:a,ACTIVITIES[0].date);
+const MAX_DATE=ACTIVITIES.reduce((a,r)=>r.date>a?r.date:a,ACTIVITIES[0].date);
+const TODAY=(()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
+const LIMITE=TODAY>MAX_DATE?TODAY:MAX_DATE;
+
+function normalizeName(s){return String(s||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z ]/g,'').replace(/\s+/g,' ').trim();}
+function formatDate(s){if(!s)return '';const [y,m,d]=s.split('-');return d+'/'+m+'/'+y;}
+function getDateRange(){const i=document.getElementById('fDataIni').value||MIN_DATE,f=document.getElementById('fDataFim').value||LIMITE;return i<=f?{ini:i,fim:f}:{ini:f,fim:i};}
+function matchType(t){const f=document.getElementById('fTipo').value;if(f==='all')return true;if(f==='Feedback')return t.startsWith('Feedback');return t===f;}
+
+function getFilteredActivities(){
+  const {ini,fim}=getDateRange();
+  return ACTIVITIES.filter(r=>{
+    if(r.date<ini||r.date>fim)return false;
+    if(!matchType(r.type))return false;
+    if(curDir!=='all'){const m=MANAGERS.find(x=>x.full===r.manager);if(!m||m.diretoria!==curDir)return false;}
+    return true;
+  });
+}
+function getManagerActivities(mgr){
+  const {ini,fim}=getDateRange();
+  return ACTIVITIES.filter(r=>r.manager===mgr.full&&r.date>=ini&&r.date<=fim&&matchType(r.type));
+}
+function getCounts(mgr){let fb=0,one=0;getManagerActivities(mgr).forEach(r=>r.type==='1:1'?one++:fb++);return {fb,one};}
+function getFiltered(){return curDir==='all'?MANAGERS:MANAGERS.filter(m=>m.diretoria===curDir);}
+
+function updateKPIs(){
+  const data=getFiltered();let tFb=0,tOne=0,active=0;
+  data.forEach(m=>{const v=getCounts(m);tFb+=v.fb;tOne+=v.one;if(v.fb||v.one)active++;});
+  const tot=Math.max(tFb+tOne,1);
+  document.getElementById('kFb').textContent=tFb;
+  document.getElementById('kFbBar').style.width=Math.round(tFb/tot*100)+'%';
+  document.getElementById('kOne').textContent=tOne;
+  document.getElementById('kOneBar').style.width=Math.round(tOne/tot*100)+'%';
+  document.getElementById('kActive').textContent=active+' / '+data.length;
+  document.getElementById('kActiveBar').style.width=Math.round(active/Math.max(data.length,1)*100)+'%';
+  const r=getDateRange();
+  document.getElementById('kFbMeta').textContent=formatDate(r.ini)+' a '+formatDate(r.fim);
+  document.getElementById('kOneMeta').textContent=formatDate(r.ini)+' a '+formatDate(r.fim);
+}
+
+function renderTipos(){
+  const acts=getFilteredActivities(),totals={};
+  acts.forEach(r=>totals[r.type]=(totals[r.type]||0)+1);
+  const entries=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  const grid=document.getElementById('tiposGrid');if(!grid)return;
+  if(!entries.length){grid.innerHTML='<span style="font-size:13px;color:var(--txt3)">Sem registros neste período</span>';return;}
+  const total=entries.reduce((a,[,n])=>a+n,0);
+  const COL={'1:1':'#185FA5','Check de Ligação':'#E30000','Feedback (modelo)':'#E07000','Feedback (sem template)':'#888'};
+  grid.innerHTML=entries.map(([t,n])=>{const c=COL[t]||'#888',pct=Math.round(n/total*100);
+    return '<div style="background:var(--bg);border-radius:var(--r-md);padding:10px 14px;min-width:150px;flex:1"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+c+';flex-shrink:0"></span><span style="font-size:11px;font-weight:600;color:var(--txt2)">'+t+'</span></div><div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:22px;font-weight:800;color:'+c+'">'+n+'</span><span style="font-size:12px;color:var(--txt3)">'+pct+'%</span></div><div style="height:4px;border-radius:99px;background:var(--border);margin-top:6px"><div style="height:4px;border-radius:99px;width:'+pct+'%;background:'+c+'"></div></div></div>';}).join('');
+}
+
+function getCoverage(fullName,val){const ts=TEAMS[normalizeName(fullName)]||0;if(ts===0)return{pct:null,ts:0};return{pct:Math.round(val/ts*100),ts};}
+function realizacaoBadge(pct){const color=pct>=100?'#0F6E56':pct>=50?'#854F0B':'#A32D2D',bg=pct>=100?'#E3F5EE':pct>=50?'#FAEEDA':'#FCEBEB';
+  return '<div style="display:flex;align-items:center;gap:6px"><span class="pill" style="background:'+bg+';color:'+color+';min-width:50px;text-align:center;font-weight:700">'+pct+'%</span><div style="height:6px;border-radius:99px;background:var(--border);width:50px"><div style="height:6px;border-radius:99px;width:'+Math.min(100,pct)+'%;background:'+color+'"></div></div></div>';}
+
+function renderTable(dir){
+  curTableDir=dir;let data=getFiltered();
+  if(dir!=='all')data=data.filter(m=>m.diretoria===dir);
+  const rows=data.map(m=>({m,v:getCounts(m)})).filter(x=>x.v.fb>0||x.v.one>0).sort((a,b)=>(b.v.fb+b.v.one)-(a.v.fb+a.v.one));
+  document.getElementById('tBody').innerHTML=rows.map(({m,v})=>{
+    const cfg=dirCfg(m.diretoria),cov=getCoverage(m.full,v.fb+v.one);
+    const st=v.fb>0&&v.one>0?'<span class="pill pg">FB + 1:1</span>':v.fb>0?'<span class="pill pa">Só feedback</span>':'<span class="pill pa">Só 1:1</span>';
+    return '<tr><td><span class="mgr-name" onclick=\'openPerson('+JSON.stringify(m.full)+')\'>'+m.name+'</span></td><td><span class="dbadge" style="background:'+cfg.bg+';color:'+cfg.text+'"><span class="ddot" style="background:'+cfg.color+'"></span>'+m.diretoria+'</span></td><td style="font-size:13px;font-weight:600;color:var(--txt2)">'+(cov.ts>0?cov.ts:'—')+'</td><td><span style="font-size:15px;font-weight:700;color:#E30000">'+v.fb+'</span></td><td><span style="font-size:15px;font-weight:700;color:#185FA5">'+v.one+'</span></td><td>'+(cov.ts>0?realizacaoBadge(cov.pct):'<span style="color:var(--txt3)">—</span>')+'</td><td>'+st+'</td></tr>';
+  }).join('');
+}
+function filterTable(dir,btn){document.querySelectorAll('#dirTabs .tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTable(dir);}
+function applyFilters(){curDir=document.getElementById('fDir').value;updateKPIs();renderTipos();renderTable(curTableDir);}
+function resetFilters(){document.getElementById('fDataIni').value=MIN_DATE;document.getElementById('fDataFim').value=LIMITE;document.getElementById('fTipo').value='all';document.getElementById('fDir').value='all';document.getElementById('fPessoa').value='all';document.querySelectorAll('#dirTabs .tab').forEach((b,i)=>b.classList.toggle('active',i===0));curTableDir='all';closePersonView();applyFilters();}
+
+function applyPersonFilter(){const val=document.getElementById('fPessoa').value;if(val!=='all') openPerson(val);}
+
+function openPerson(fullName){
+  const m=MANAGERS.find(x=>x.full===fullName);if(!m)return;
+  document.getElementById('overviewSection').classList.add('off');
+  document.getElementById('personSection').classList.add('on');
+  const cfg=dirCfg(m.diretoria),init=m.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('pHdr').innerHTML='<div class="pav" style="background:'+cfg.color+'">'+init+'</div><div><div class="pname">'+m.name+'</div><div class="pmeta">'+m.diretoria+' · Gestor</div></div>';
+  const v=getCounts(m),cov=getCoverage(m.full,v.fb+v.one),ts=cov.ts;
+  const cFb=getCoverage(m.full,v.fb),cOne=getCoverage(m.full,v.one);
+  document.getElementById('pKpis').innerHTML=
+    '<div class="pkcard"><div class="pkval" style="color:#E30000">'+v.fb+'</div><div class="pklabel">Feedbacks / Checks</div>'+(cFb.pct!==null?'<div style="margin-top:8px;font-size:12px;color:var(--txt2)">'+cFb.pct+'% da equipe</div>':'')+'</div>'+
+    '<div class="pkcard"><div class="pkval" style="color:#185FA5">'+v.one+'</div><div class="pklabel">1:1 Realizados</div>'+(cOne.pct!==null?'<div style="margin-top:8px;font-size:12px;color:var(--txt2)">'+cOne.pct+'% da equipe</div>':'')+'</div>'+
+    '<div class="pkcard"><div class="pkval" style="color:'+(cov.pct!==null?(cov.pct>=100?'#0F6E56':cov.pct>=50?'#854F0B':'#A32D2D'):'var(--txt)')+'">'+(cov.pct!==null?cov.pct+'%':'—')+'</div><div class="pklabel">Realização Total</div>'+(ts>0?'<div style="margin-top:8px;font-size:12px;color:var(--txt3)">'+ts+' na equipe</div>':'<div style="margin-top:8px;font-size:12px;color:var(--txt3)">Sem liderados no QLP</div>')+'</div>';
+  const acts=getManagerActivities(m),byDate={};
+  acts.forEach(r=>{if(!byDate[r.date])byDate[r.date]={fb:0,one:0};r.type==='1:1'?byDate[r.date].one++:byDate[r.date].fb++;});
+  const dates=Object.keys(byDate).sort().reverse();
+  document.getElementById('wDetail').innerHTML='<div style="font-size:14px;font-weight:700;margin-bottom:14px">Detalhe por data</div><div style="display:grid;grid-template-columns:180px 1fr 1fr;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)"><span style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em">Data</span><span style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em">Feedbacks</span><span style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em">1:1</span></div>'+
+    (dates.length?dates.map(d=>{const x=byDate[d];return '<div class="wrow"><span class="wlabel">'+formatDate(d)+'</span><div class="wcell" style="color:#E30000"><span style="min-width:20px">'+x.fb+'</span></div><div class="wcell" style="color:#185FA5"><span style="min-width:20px">'+x.one+'</span></div></div>';}).join(''):'<div style="padding:15px 0;color:var(--txt3)">Sem registros no período.</div>');
+}
+function closePersonView(){document.getElementById('personSection').classList.remove('on');document.getElementById('overviewSection').classList.remove('off');document.getElementById('fPessoa').value='all';}
+
+function setMainView(view){
+  mainView=view;
+  document.getElementById('btnVisao').classList.toggle('active',view==='overview');
+  document.getElementById('btnPdiView').classList.toggle('active',view==='pdi');
+  document.getElementById('overviewSection').style.display=view==='overview'?'block':'none';
+  document.getElementById('pdiMainSection').style.display=view==='pdi'?'block':'none';
+  const hide=view==='pdi';
+  ['fgDataIni','fgDataFim','fgTipo','fgDir','fgPessoa','btnLimpar'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=hide?'none':'';});
+  if(view==='pdi'){populatePdiGestorSelect();renderPdiSection();}
+}
+
+function populatePdiGestorSelect(){
+  const sel=document.getElementById('pdiGestor');
+  if(sel.options.length<=1){
+    const allG=new Set([...Object.keys(PDI_DATA.pdi),...Object.keys(PDI_DATA.trilhas)]);
+    [...allG].sort().forEach(g=>{const parts=g.split(' ').map(w=>w[0]+w.slice(1).toLowerCase()),s=parts[0]+' '+parts[parts.length-1],o=document.createElement('option');o.value=g;o.textContent=s;sel.appendChild(o);});
+  }
+  const ts=document.getElementById('pdiTrilha');
+  if(ts && ts.options.length<=1){
+    const all=new Set();
+    Object.values(PDI_DATA.trilhas).forEach(d=>d.colabs.forEach(c=>{if(c.trilha)all.add(c.trilha);}));
+    [...all].sort().forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;ts.appendChild(o);});
+  }
+}
+
+function progressBar(val,color,width=60){return `<div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;font-weight:600;min-width:32px">${val}%</span><div style="height:5px;border-radius:99px;background:var(--border);width:${width}px"><div style="height:5px;border-radius:99px;width:${Math.min(100,val)}%;background:${color}"></div></div></div>`;}
+
+function renderPdiSection(){
+  const pdiType=document.getElementById('pdiType')?.value||'all';
+  const pdiGestor=document.getElementById('pdiGestor')?.value||'all';
+  const trilhaF=document.getElementById('pdiTrilha')?.value||'all';
+  const showPdi=pdiType==='all'||pdiType==='pdi';
+  const showTri=pdiType==='all'||pdiType==='trilhas';
+
+  let pdi=pdiGestor==='all'?PDI_DATA.pdi:Object.fromEntries(Object.entries(PDI_DATA.pdi).filter(([k])=>k===pdiGestor));
+  let tri=pdiGestor==='all'?PDI_DATA.trilhas:Object.fromEntries(Object.entries(PDI_DATA.trilhas).filter(([k])=>k===pdiGestor));
+
+  // filtro por trilha específica
+  if(trilhaF!=='all'){
+    const t2={};
+    Object.entries(tri).forEach(([g,d])=>{
+      const cl=d.colabs.filter(c=>c.trilha===trilhaF);
+      if(cl.length) t2[g]={total:cl.length,prog:Math.round(cl.reduce((a,c)=>a+c.progresso,0)/cl.length),
+                           concluidas:cl.filter(c=>c.pct_ok===100).length,colabs:cl};
+    });
+    tri=t2; pdi={};
+  }
+
+  let totalPdi=0,totalTri=0,progArr=[];
+  if(showPdi)Object.values(pdi).forEach(d=>{totalPdi+=d.total;progArr.push(d.prog);});
+  if(showTri)Object.values(tri).forEach(d=>{totalTri+=d.total;progArr.push(d.prog);});
+  const avgProg=progArr.length?Math.round(progArr.reduce((a,b)=>a+b,0)/progArr.length):0;
+  document.getElementById('kPdiTotal').textContent=totalPdi;
+  document.getElementById('kPdiBar').style.width=Math.min(100,totalPdi*8)+'%';
+  document.getElementById('kTriTotal').textContent=totalTri;
+  document.getElementById('kTriBar').style.width=Math.min(100,totalTri*4)+'%';
+  document.getElementById('kPdiProg').textContent=avgProg+'%';
+  document.getElementById('kPdiProgBar').style.width=avgProg+'%';
+  document.getElementById('pdiTableWrap').style.display=showPdi?'':'none';
+  document.getElementById('triTableWrap').style.display=showTri?'':'none';
+
+  // card de distribuição por trilha
+  const TCOL={'PDI para Vendedores':'#E07000','PDI para Gerentes':'#7C3AED','PDI de Liderança (Vendas)':'#185FA5',
+              'Upskill Especialista':'#1D9E75'};
+  const cnt={};
+  Object.values(tri).forEach(d=>d.colabs.forEach(c=>{if(c.trilha)cnt[c.trilha]=(cnt[c.trilha]||0)+1;}));
+  const tg=document.getElementById('trilhaGrid'), tcard=document.getElementById('trilhaCard');
+  if(tg){
+    const ent=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+    tcard.style.display=(showTri&&ent.length)?'':'none';
+    const tt=ent.reduce((a,[,n])=>a+n,0);
+    tg.innerHTML=ent.map(([t,n])=>{const c=TCOL[t]||'#888',pc=Math.round(n/tt*100);
+      return '<div style="background:var(--bg);border-radius:var(--r-md);padding:10px 14px;min-width:160px;flex:1"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+c+';flex-shrink:0"></span><span style="font-size:11px;font-weight:600;color:var(--txt2)">'+t+'</span></div><div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:22px;font-weight:800;color:'+c+'">'+n+'</span><span style="font-size:12px;color:var(--txt3)">'+pc+'%</span></div><div style="height:4px;border-radius:99px;background:var(--border);margin-top:6px"><div style="height:4px;border-radius:99px;width:'+pc+'%;background:'+c+'"></div></div></div>';}).join('');
+  }
+
+  const pdiRows=Object.entries(pdi).sort((a,b)=>b[1].prog-a[1].prog);
+  document.getElementById('pdiTableBody').innerHTML=pdiRows.map(([g,d])=>{const nm=g.split(' ').map(w=>w[0]+w.slice(1).toLowerCase()),ss=nm[0]+' '+nm[nm.length-1],st=d.atrasados>0?'<span class="pill pr">'+d.atrasados+' atrasado</span>':'<span class="pill pa">'+d.em_andamento+' andamento</span>';return '<tr><td style="font-weight:500">'+ss+'</td><td>'+d.total+'</td><td>'+progressBar(d.prog,'#7C3AED')+'</td><td>'+st+'</td></tr>';}).join('');
+  const triRows=Object.entries(tri).sort((a,b)=>b[1].prog-a[1].prog);
+  document.getElementById('triTableBody').innerHTML=triRows.map(([g,d])=>{const nm=g.split(' ').map(w=>w[0]+w.slice(1).toLowerCase()),ss=nm[0]+' '+nm[nm.length-1];return '<tr><td style="font-weight:500">'+ss+'</td><td>'+d.total+'</td><td>'+progressBar(d.prog,'#E07000')+'</td><td><span class="pill pa">'+d.total+' em andamento</span></td></tr>';}).join('');
+
+  const allG=new Set([...(showPdi?Object.keys(pdi):[]),...(showTri?Object.keys(tri):[])]);
+  document.getElementById('pdiDetailGrid').innerHTML=[...allG].sort().map(g=>{
+    const pdiD=pdi[g],triD=tri[g],gName=g.split(' ').map(w=>w[0]+w.slice(1).toLowerCase()).join(' '),gShort=gName.split(' '),dn=gShort[0]+' '+gShort[gShort.length-1];
+    let pdiHtml='';
+    if(showPdi&&pdiD&&pdiD.colabs)pdiHtml='<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">PDI Individual</div>'+pdiD.colabs.map(c=>'<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:12px;font-weight:500">'+c.nome.split(' ')[0]+' '+c.nome.split(' ').pop()+'</span><div style="display:flex;align-items:center;gap:8px">'+progressBar(c.progresso,'#7C3AED',50)+'<span class="pill '+(c.status==='Concluído'?'pg':'pa')+'" style="font-size:10px">'+c.status+'</span></div></div>'+(c.plano?'<div style="font-size:10px;color:var(--txt3);margin-top:2px">'+c.plano+(c.tipo?' · '+c.tipo:'')+'</div>':'')+'</div>').join('')+'</div>';
+    let triHtml='';
+    if(showTri&&triD&&triD.colabs)triHtml='<div><div style="font-size:11px;font-weight:600;color:#E07000;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Trilhas</div>'+triD.colabs.map(c=>'<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:12px;font-weight:500">'+c.nome.split(' ')[0]+' '+c.nome.split(' ').pop()+'</span><div style="display:flex;align-items:center;gap:8px">'+progressBar(c.progresso,'#E07000',50)+'<span class="pill '+(c.pct_ok===100?'pg':'pa')+'" style="font-size:10px">'+(c.pct_ok===100?'OK':'Andamento')+'</span></div></div>'+(c.trilha?'<div style="font-size:10px;color:var(--txt3);margin-top:2px">'+c.trilha+'</div>':'')+'</div>').join('')+'</div>';
+    return '<div style="background:var(--bg);border-radius:var(--r-md);padding:12px 14px"><div style="font-size:13px;font-weight:700;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #E30000">'+dn+'</div>'+pdiHtml+triHtml+'</div>';
+  }).join('');
+}
+
+const di=document.getElementById('fDataIni'),df=document.getElementById('fDataFim');
+di.min=MIN_DATE;di.max=LIMITE;di.value=MIN_DATE;
+df.min=MIN_DATE;df.max=LIMITE;df.value=LIMITE;
+document.getElementById('dataAte').textContent='dados até '+formatDate(DATA_ATE);
+applyFilters();
+</script>
+</body>
+</html>
